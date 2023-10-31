@@ -1,0 +1,19 @@
+# action.yml
+name: 'Terraform fmt -check'
+description: 'Check if terraform files need formatting'
+inputs:
+  github_token:
+    description: 'GitHub API token.'
+    required: true
+    default: ''
+  github_pr_number:
+    description: 'GitHub PR number.'
+    required: true
+    default: ''
+runs:
+  using: docker
+  image: ../data/Dockerfile
+  entrypoint: /entrypoints/terraform-fmt.sh
+  args:
+    - ${{ inputs.github_token }}
+    - ${{ inputs.github_pr_number }}

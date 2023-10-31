@@ -1,0 +1,24 @@
+# action.yml
+name: 'Terraform costs'
+description: 'Costs estimation.'
+inputs:
+  github_token:
+    description: 'GitHub API token.'
+    required: true
+    default: ''
+  github_pr_number:
+    description: 'GitHub PR number.'
+    required: true
+    default: ''
+  infracost_token:
+    description: 'Infracost API token.'
+    required: true
+    default: ''
+runs:
+  using: docker
+  image: ../data/Dockerfile
+  entrypoint: /entrypoints/terraform-costs.sh
+  args:
+    - ${{ inputs.github_token }}
+    - ${{ inputs.github_pr_number }}
+    - ${{ inputs.infracost_token }}

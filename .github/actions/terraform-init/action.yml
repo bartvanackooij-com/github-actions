@@ -1,0 +1,7 @@
+# action.yml
+name: 'Terraform init'
+description: 'Initialize terraform'
+runs:
+  using: docker
+  image: ../data/Dockerfile
+  entrypoint: /entrypoints/terraform-init.sh

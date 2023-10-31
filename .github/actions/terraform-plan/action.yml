@@ -1,0 +1,19 @@
+# action.yml
+name: 'Terraform plan'
+description: 'Outputs the terraform plan'
+inputs:
+  github_token:
+    description: 'GitHub API token.'
+    required: true
+    default: ''
+  github_pr_number:
+    description: 'GitHub PR number.'
+    required: true
+    default: ''
+runs:
+  using: docker
+  image: ../data/Dockerfile
+  entrypoint: /entrypoints/terraform-plan.sh
+  args:
+    - ${{ inputs.github_token }}
+    - ${{ inputs.github_pr_number }}

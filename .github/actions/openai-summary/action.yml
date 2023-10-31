@@ -1,0 +1,24 @@
+# action.yml
+name: 'Open AI summary'
+description: 'Get a summary of the PR.'
+inputs:
+  github_token:
+    description: 'GitHub API token.'
+    required: true
+    default: ''
+  github_pr_number:
+    description: 'GitHub PR number.'
+    required: true
+    default: ''
+  open_ai_key:
+    description: 'Open AI key.'
+    required: true
+    default: ''
+runs:
+  using: docker
+  image: ../data/Dockerfile
+  entrypoint: /entrypoints/openai-summary.sh
+  args:
+    - ${{ inputs.github_token }}
+    - ${{ inputs.github_pr_number }}
+    - ${{ inputs.open_ai_key}}
