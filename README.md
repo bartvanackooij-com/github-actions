@@ -2,72 +2,79 @@
 
 ## Description
 
-A collection of re-usable GitHub actions combined in a GitHub workflow for Terraform projects using Azure. Besides having a working ci/cd pipeline to use in different projects. The main goal of this project is to set up a blueprint which is easy to understand, edit, expand and to use as a base for online tutorials and blogs. 
+Terraform GitHub Actions is a collection of re-usable GitHub Actions bundled into a GitHub workflow designed for Terraform projects using Azure. The primary goal of this project is to create a versatile CI/CD pipeline that can be used across different projects. Additionally, it serves as a blueprint for easy understanding, customization, and expansion, making it suitable as a foundation for online tutorials and blogs.
 
-The idea behind this workflow is optimizing your [GitOps](https://about.gitlab.com/topics/gitops/) workflow. If all changes related to the infrastructure is done through merge requests, I'd like to have all the information available in the pull request. This workflow will show you the output of terraform formatting, the plan, summary of the costs and a short description of the pull request. (And as a little bonus a short AI generated poem).
+The core idea behind this workflow is to optimize your [GitOps](https://about.gitlab.com/topics/gitops/) process. By ensuring that all infrastructure-related changes are made through merge requests, this workflow provides comprehensive information within the pull request, including Terraform formatting, the plan, cost summary, and a description of the changes, topped with a short AI-generated poem for a touch of whimsy.
 
-![](/img/workflow.gif)
-
+![Workflow](/img/workflow.gif)
 
 ## Table of Contents
 
 - [Usage](#usage)
 - [Workflow](#workflow)
-- [Example](#example)
-- [License](#license)
+- [Examples](#examples)
 
 ## Usage
 
-1. Either fork or use this repository.
-2. Set the following secrets in your repository (/settings/secrets/actions): 
+### Prerequisites
+
+Before using these GitHub Actions, make sure you have the following in place:
+- A GitHub account
+- An Azure account
+- Terraform installed
+
+### Setting Up Secrets
+
+To use these actions, configure the following secrets in your repository settings (Settings > Secrets > New Repository Secret):
 
 | Secret Name           | Description                  |
 |-----------------------|------------------------------|
 | AZURE_CLIENT_ID       | Your Azure Client ID.        |
-| AZURE_SUBSCRIPTION_ID | Your Azure Subscribtion ID.  |
+| AZURE_SUBSCRIPTION_ID | Your Azure Subscription ID.  |
 | AZURE_TENANT_ID       | Your Azure Tenant ID.        |
 | GH_PAT                | Your GitHub PAT token.       |
 | INFRACOST_API_KEY     | Your Infracost API key.      |
 | OPEN_AI_KEY           | Your OpenAI key.             |
 
-
 ## Workflow
 
-There are 2 workflows in this repository. 
+There are two workflows in this repository:
 
 ### pr-checks.yml
-This workflow will be triggered when a pull request is opened, synced, re-opened or changed. It will execute the following steps in order to create a comment on your pull request which will provide you with all the information you need to determine whether or not you can merge it. 
 
-- It will checkout the actions in this repository
-- It will build the docker images to run the actions
-- It will checkout the repository which holds the terraform code. 
-- It will: 
-    - check terraform formatting.
-    - initialise terraform.
-    - validate the terraform code.
-    - show the changes of the terraform plan.
-    - determine the costs of the change.
-    - provide a brief summary of the changes using open AI.
-    - upload the terraform plan. 
+This workflow is triggered when a pull request is opened, synced, re-opened, or changed. It provides you with essential information to determine whether you can merge the pull request. It includes the following steps:
 
-You can set this as a pre-requisite in GitHub that these must succeed in order to merge your pull request. 
+- Checkout the actions in this repository
+- Build the Docker images to run the actions
+- Checkout the repository containing the Terraform code
+- Execute the following tasks:
+    - Check Terraform formatting
+    - Initialize Terraform
+    - Validate the Terraform code
+    - Display the changes of the Terraform plan
+    - Determine the costs of the changes
+    - Provide a brief summary of the changes using OpenAI
+    - Upload the Terraform plan
+
+You can set this workflow as a prerequisite in GitHub to ensure that these tasks must succeed for the pull request to be merged.
 
 ### merge.yml
-This workflow will only be triggered when a pull request is merged and it will do the actual deploying of your code to Azure. 
 
-- It will checkout the actions in this repository
-- It will build the docker images to run the actions
-- It will checkout the repository which holds the terraform code. 
-- It will: 
-    - initialise terraform.
-    - validate the terraform code.
-    - execute terraform plan.
-    - apply the changes from the terraform plan. 
-    - update the comment on the pull request with the apply summary.
+This workflow is triggered when a pull request is merged and handles the actual deployment of your code to Azure. It includes the following steps:
 
-## Example
+- Checkout the actions in this repository
+- Build the Docker images to run the actions
+- Checkout the repository containing the Terraform code
+- Execute the following tasks:
+    - Initialize Terraform
+    - Validate the Terraform code
+    - Execute the Terraform plan
+    - Apply the changes from the Terraform plan
+    - Update the comment on the pull request with the apply summary.
 
-Below is an example of both workflows and how they can be configured. Create these files in your `.github/workflows` folder.
+## Examples
+
+For detailed examples of how to configure and use these workflows, see the provided configuration files:
 
 ### pr-check.yml
 ```yaml
